@@ -22,7 +22,7 @@
         <jacoco.version>0.8.13</jacoco.version>
 
         <sonar.projectKey>moventi-webinar-devops</sonar.projectKey>
-        <sonar.organization>TU_ORGANIZATION</sonar.organization>
+        <sonar.organization>william-cabrera</sonar.organization>
         <sonar.host.url>https://sonarcloud.io</sonar.host.url>
     </properties>
 

@@ -90,7 +90,7 @@ curl "http://localhost:8080/api/v1/hello?name=William"
 
 ## Análisis con SonarQube Cloud
 
-El `pom.xml` ya trae las propiedades de Sonar (`sonar.projectKey`, `sonar.organization`, `sonar.host.url`). Antes de lanzar el análisis, reemplaza `TU_ORGANIZATION` por tu organización real de SonarCloud.
+El `pom.xml` ya trae las propiedades de Sonar (`sonar.projectKey`, `sonar.organization: william-cabrera`, `sonar.host.url`).
 
 ```bash
 mvn clean verify sonar:sonar -Dsonar.token=TU_TOKEN
