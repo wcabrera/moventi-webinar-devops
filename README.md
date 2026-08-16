@@ -92,6 +92,8 @@ curl "http://localhost:8080/api/v1/hello?name=William"
 
 El `pom.xml` ya trae las propiedades de Sonar (`sonar.projectKey` y `sonar.organization: william-cabrera-devops-webinar`, `sonar.host.url`).
 
+> Nota: el análisis se hace vía CI (GitHub Actions), por lo que "Automatic Analysis" debe estar deshabilitado en la configuración del proyecto en SonarCloud (Administration → Analysis Method); ambos modos no pueden estar activos a la vez.
+
 ```bash
 mvn clean verify sonar:sonar -Dsonar.token=TU_TOKEN
 ```
