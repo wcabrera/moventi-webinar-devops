@@ -26,6 +26,13 @@ public class HelloController {
         );
     }
 
+    @GetMapping("/time")
+    public Map<String, Object> time() {
+        return Map.of(
+                "timestamp", Instant.now().toString()
+        );
+    }
+
     @GetMapping("/hello-legacy")
     public Map<String, Object> helloLegacy(
             @RequestParam(defaultValue = "DevOps") String name) {
