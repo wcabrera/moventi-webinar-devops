@@ -90,11 +90,13 @@ curl "http://localhost:8080/api/v1/hello?name=William"
 
 ## Análisis con SonarQube Cloud
 
-El `pom.xml` ya trae las propiedades de Sonar (`sonar.projectKey`, `sonar.organization: william-cabrera`, `sonar.host.url`).
+El `pom.xml` ya trae las propiedades de Sonar (`sonar.projectKey` y `sonar.organization: william-cabrera-devops-webinar`, `sonar.host.url`).
 
 ```bash
 mvn clean verify sonar:sonar -Dsonar.token=TU_TOKEN
 ```
+
+En SonarCloud, la rama principal del proyecto debe estar configurada como `main` (Project Settings → Branches → `main` → *Set as Main Branch*), ya que el repositorio no usa `master`.
 
 ## Levantar con Docker
 
