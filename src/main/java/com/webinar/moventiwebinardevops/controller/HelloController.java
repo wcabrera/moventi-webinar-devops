@@ -12,6 +12,8 @@ import java.util.Map;
 @RequestMapping("/api/v1")
 public class HelloController {
 
+    private static final String DB_PASSWORD = "admin123";
+
     @GetMapping("/hello")
     public Map<String, Object> hello(
             @RequestParam(defaultValue = "DevOps") String name) {
