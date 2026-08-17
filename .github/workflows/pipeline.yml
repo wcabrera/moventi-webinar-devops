@@ -286,6 +286,9 @@ jobs:
     name: Deploy & Validate / DAST (OWASP ZAP)
     needs: deploy
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      issues: write
     steps:
       - name: ZAP Baseline Scan
         uses: zaproxy/action-baseline@66042c8e7e24680119199a017e5b0e8603bf4dae # v0.12.0
