@@ -12,8 +12,6 @@ import java.util.Map;
 @RequestMapping("/api/v1")
 public class HelloController {
 
-    private static final String DB_PASSWORD = "admin123";
-
     @GetMapping("/hello")
     public Map<String, Object> hello(
             @RequestParam(defaultValue = "DevOps") String name) {
@@ -29,18 +27,6 @@ public class HelloController {
     @GetMapping("/time")
     public Map<String, Object> time() {
         return Map.of(
-                "timestamp", Instant.now().toString()
-        );
-    }
-
-    @GetMapping("/hello-legacy")
-    public Map<String, Object> helloLegacy(
-            @RequestParam(defaultValue = "DevOps") String name) {
-
-        return Map.of(
-                "message", "Hola " + name,
-                "application", "DevOps Webinar 2026",
-                "version", "1.0.0",
                 "timestamp", Instant.now().toString()
         );
     }

@@ -21,17 +21,6 @@ class HelloControllerTest {
     }
 
     @Test
-    void shouldReturnLegacyHelloMessage() {
-
-        var response = controller.helloLegacy("William");
-
-        assertEquals(
-                "Hola William",
-                response.get("message")
-        );
-    }
-
-    @Test
     void shouldReturnCurrentTime() {
 
         var response = controller.time();
