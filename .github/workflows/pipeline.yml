@@ -244,11 +244,12 @@ jobs:
           EC2_USER: ${{ secrets.EC2_USER }}
           EC2_HOST: ${{ secrets.EC2_HOST }}
         run: |
+          ssh -i ~/.ssh/ec2_key "$EC2_USER@$EC2_HOST" "mkdir -p ~/devops-webinar-scripts"
           scp \
             -i ~/.ssh/ec2_key \
             -r \
-            ./scripts \
-            "$EC2_USER@$EC2_HOST:/opt/devops-webinar-scripts"
+            ./scripts/. \
+            "$EC2_USER@$EC2_HOST:~/devops-webinar-scripts"
 
       - name: Deploy (pull image + run) — timeout 5m
         timeout-minutes: 5
@@ -264,7 +265,7 @@ jobs:
             -i ~/.ssh/ec2_key \
             "$EC2_USER@$EC2_HOST" \
             "
-              cd /opt/devops-webinar-scripts &&
+              cd ~/devops-webinar-scripts &&
               chmod +x deploy.sh &&
               echo '$GHCR_TOKEN' | docker login ghcr.io -u $GHCR_ACTOR --password-stdin &&
               ./deploy.sh $DEPLOY_IMAGE $DEPLOY_TAG
