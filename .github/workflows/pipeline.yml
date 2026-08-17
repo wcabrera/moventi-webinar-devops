@@ -11,9 +11,6 @@ on:
 env:
   IMAGE: ghcr.io/${{ github.repository }}
 
-permissions:
-  contents: read
-
 jobs:
 
   # ---------------------------------------------------------------------
@@ -22,6 +19,8 @@ jobs:
   source:
     name: Source
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     outputs:
       version: ${{ steps.meta.outputs.version }}
       environment: ${{ steps.meta.outputs.environment }}
@@ -46,6 +45,8 @@ jobs:
     name: Build & Test
     needs: source
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
@@ -91,6 +92,8 @@ jobs:
     name: Quality & Security / SonarQube
     needs: build-test
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
@@ -127,6 +130,7 @@ jobs:
     needs: build-test
     runs-on: ubuntu-latest
     permissions:
+      contents: read
       security-events: write
     steps:
       - name: Checkout
@@ -154,6 +158,8 @@ jobs:
     name: Quality & Security / Secrets (Gitleaks)
     needs: source
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
     steps:
       - name: Checkout
         uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
@@ -217,6 +223,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: production
     permissions:
+      contents: read
       packages: read
     steps:
       - name: Checkout
