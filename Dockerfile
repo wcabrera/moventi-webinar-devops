@@ -9,7 +9,7 @@ COPY src ./src
 RUN mvn -B clean package -DskipTests
 
 # ---- Runtime stage ----
-FROM eclipse-temurin:21-jre
+FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 
 COPY --from=build /app/target/moventi-webinar-devops-1.0.0.jar app.jar
