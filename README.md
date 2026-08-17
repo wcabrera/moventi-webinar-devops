@@ -153,3 +153,5 @@ Secrets requeridos en el repositorio (Settings → Secrets and variables → Act
 `GITHUB_TOKEN` (automático) se usa para publicar en GHCR y para que el EC2 haga `docker login` al momento de pull.
 
 El Security Group de la instancia EC2 debe permitir tráfico entrante en el puerto `80` (el contenedor mapea `80:8080`).
+
+**Riesgo aceptado:** el health check y el DAST acceden por `http://` (sin TLS), ya que la demo no tiene dominio/certificado propio. Marcado como "Won't Fix" en SonarCloud.
