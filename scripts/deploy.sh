@@ -2,19 +2,16 @@
 set -e
 
 APP_NAME="devops-webinar"
-IMAGE_NAME="devops-webinar"
-IMAGE_TAG="$1"
+IMAGE="$1"
+IMAGE_TAG="$2"
 
 echo "=========================="
 echo " DEVOPS WEBINAR DEPLOY"
 echo "=========================="
-echo "Image tag: ${IMAGE_TAG}"
+echo "Image: ${IMAGE}:${IMAGE_TAG}"
 
-echo "Building Docker image..."
-docker build \
-  -t ${IMAGE_NAME}:${IMAGE_TAG} \
-  -t ${IMAGE_NAME}:latest \
-  .
+echo "Pulling image from registry..."
+docker pull ${IMAGE}:${IMAGE_TAG}
 
 echo "Stopping previous container..."
 docker stop ${APP_NAME} || true
@@ -27,7 +24,7 @@ docker run -d \
   --name ${APP_NAME} \
   --restart unless-stopped \
   -p 80:8080 \
-  ${IMAGE_NAME}:${IMAGE_TAG}
+  ${IMAGE}:${IMAGE_TAG}
 
 echo "Deployment completed"
 docker ps

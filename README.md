@@ -125,10 +125,23 @@ curl "http://localhost:8080/api/v1/hello?name=William"
 
 ## CI/CD
 
-El workflow en `.github/workflows/pipeline.yml` corre en cada push/PR a `main`:
+El workflow en `.github/workflows/pipeline.yml` corre en cada push/PR a `main`, organizado en etapas:
 
-1. **build-test-sonar**: compila con Maven, corre los tests y envía el análisis a SonarCloud.
-2. **deploy**: (solo en push a `main`) copia el proyecto por SSH/SCP a una instancia EC2, corre `scripts/deploy.sh` (build de la imagen Docker + `docker run`) y valida el despliegue con un health check contra `/api/v1/hello`.
+| Etapa | Job(s) | Qué hace |
+|---|---|---|
+| Source | `source` | Resuelve aplicación, ambiente (según rama/evento) y versión (git sha) |
+| Build & Test | `build-test` | Unit tests + integration tests (Failsafe, `*IT`) con gate mínimo de cobertura (JaCoCo), y API testing black-box contra el jar empaquetado |
+| Quality & Security | `sonarqube` | Análisis SonarCloud + espera del Quality Gate |
+| Quality & Security | `sast` | Análisis estático con CodeQL |
+| Quality & Security | `secrets-scan` | Detección de secretos con Gitleaks |
+| Package & Publish | `package-publish` | Build de la imagen Docker, escaneo de vulnerabilidades (Trivy, bloquea CRITICAL/HIGH) y push a GitHub Container Registry (GHCR) |
+| Deploy & Validate | `deploy` | SSH a EC2, `docker pull` de la imagen ya publicada y `docker run` (timeout 5 min), health check con reintentos |
+| Deploy & Validate | `dast` | Escaneo dinámico con OWASP ZAP (baseline) contra la app ya desplegada |
+| Governance & Monitoring | `report` | Resumen de resultado de cada etapa en el Job Summary de GitHub Actions |
+
+`package-publish`, `deploy` y `dast` solo corren en push a `main` (no en pull requests).
+
+El job `deploy` usa un **GitHub Environment** llamado `production` — si configuras revisores requeridos en `Settings → Environments → production`, el pipeline pedirá aprobación manual antes de desplegar.
 
 Secrets requeridos en el repositorio (Settings → Secrets and variables → Actions):
 
@@ -136,5 +149,7 @@ Secrets requeridos en el repositorio (Settings → Secrets and variables → Act
 - `EC2_SSH_KEY` (llave privada)
 - `EC2_HOST` (IP/DNS **pública** de la instancia)
 - `EC2_USER`
+
+`GITHUB_TOKEN` (automático) se usa para publicar en GHCR y para que el EC2 haga `docker login` al momento de pull.
 
 El Security Group de la instancia EC2 debe permitir tráfico entrante en el puerto `80` (el contenedor mapea `80:8080`).
