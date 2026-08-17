@@ -127,7 +127,14 @@ curl "http://localhost:8080/api/v1/hello?name=William"
 
 El workflow en `.github/workflows/pipeline.yml` corre en cada push/PR a `main`:
 
-1. **build-and-test**: compila con Maven, corre los tests y genera el reporte JaCoCo (se publica como artifact de GitHub Actions).
-2. **docker-build**: (solo en push a `main`) construye la imagen Docker y la publica en Docker Hub usando los secrets `DOCKERHUB_USERNAME` y `DOCKERHUB_TOKEN`.
+1. **build-test-sonar**: compila con Maven, corre los tests y envía el análisis a SonarCloud.
+2. **deploy**: (solo en push a `main`) copia el proyecto por SSH/SCP a una instancia EC2, corre `scripts/deploy.sh` (build de la imagen Docker + `docker run`) y valida el despliegue con un health check contra `/api/v1/hello`.
 
-Para que el segundo job funcione, configura esos dos secrets en el repositorio (Settings → Secrets and variables → Actions).
+Secrets requeridos en el repositorio (Settings → Secrets and variables → Actions):
+
+- `SONAR_TOKEN`
+- `EC2_SSH_KEY` (llave privada)
+- `EC2_HOST` (IP/DNS **pública** de la instancia)
+- `EC2_USER`
+
+El Security Group de la instancia EC2 debe permitir tráfico entrante en el puerto `80` (el contenedor mapea `80:8080`).
