@@ -12,6 +12,8 @@ RUN mvn -B clean package -DskipTests
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 
+RUN apk update && apk upgrade --no-cache
+
 COPY --from=build /app/target/moventi-webinar-devops-1.0.0.jar app.jar
 
 EXPOSE 8080
