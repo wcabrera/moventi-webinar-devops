@@ -18,7 +18,7 @@ public class HelloController {
 
         return Map.of(
                 "message", "Hola " + name,
-                "application", "DevOps Webinar 2026",
+                "application", "DevOps Moventi 20260820",
                 "version", "1.0.0",
                 "timestamp", Instant.now().toString()
         );
